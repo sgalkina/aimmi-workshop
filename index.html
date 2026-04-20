@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI for Microbiome Workshop</title>
+  <meta name="description" content="Workshop on AI for Biology and Chemistry" />
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+            --text: #111111;
+      --muted: #666666;
+      --accent: #5b7f6f; /* muted green-blue */
+      --accent-soft: #e8f0ec;
+            --line: #e6e8eb;
+      --shadow: 0 4px 16px rgba(0,0,0,0.04);
+      --radius: 16px;
+      --maxw: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 2rem), var(--maxw)); margin: 0 auto; }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247,248,250,0.92);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.05rem;
+    }
+
+    .brand span { color: var(--text); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .hero {
+      padding: 4.8rem 0 1.4rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    
+
+    
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 5.2vw, 4.2rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      color: var(--accent);
+    }
+
+    .lead {
+      font-size: 1.14rem;
+      color: var(--muted);
+      max-width: 58ch;
+      margin: 1.25rem 0 1.8rem;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.78rem 1.05rem;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: none;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    section {
+      padding: 0.8rem 0 1rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      letter-spacing: -0.04em;
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+
+    .section-lead {
+      color: #000 !important;
+      max-width: 100%;
+      margin: 0 0 1rem;
+    }
+
+    
+
+    .speakers-group {
+      border-left: 3px solid var(--accent);
+      margin-bottom: 1rem;
+      padding: 0.9rem;
+      border-radius: var(--radius);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .speakers-group h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.08rem;
+    }
+
+    .speaker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+      gap: 0.8rem;
+    }
+
+    /* Two themes on same row */
+    .themes-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .themes-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .speaker {
+      text-align: center;
+      position: relative;
+    }
+
+    .speaker summary {
+      cursor: pointer;
+      display: block;
+      position: relative;
+    }
+
+    
+
+    
+
+    .speaker img {
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.45rem;
+      border: 2px solid var(--accent);
+    }
+
+    .speaker-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .speaker-meta {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .speaker-email {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .speaker-email a { text-decoration: underline; }
+
+    .speaker summary .bio-label {
+      display: block;
+      margin-top: 0.12rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Organizers styling (visually distinct) */
+    .organizers-group {
+      margin-top: 1.4rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background: #fafafa;
+      border: 1px solid var(--line);
+      position: relative;
+    }
+
+    
+
+    .organizers-group h3 {
+      margin-bottom: 0.6rem;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .organizers-group .speaker img {
+      width: 110px;
+      height: 110px;
+      border: 2px solid #dfe3e8;
+    }
+
+    .organizers-group .speaker-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    
+
+    
+
+    
+
+    .agenda {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0.85rem;
+      padding: 0.85rem 0.95rem;
+      align-items: start;
+    }
+
+    .agenda-time {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .agenda-item h3 {
+      margin: 0 0 0.2rem;
+      font-size: 0.98rem;
+    }
+
+    .agenda-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .talk details {
+      width: 100%;
+    }
+
+    .talk summary {
+      list-style: none;
+      cursor: pointer;
+      display: block;
+    }
+
+    .talk summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .talk summary::after {
+      content: "Open abstract";
+      display: inline-block;
+      margin-top: 0.25rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .talk details[open] summary::after {
+      content: "Hide abstract";
+    }
+
+    .abstract {
+      margin-top: 0.55rem;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      border: none;
+      color: var(--muted);
+    }
+
+    .break-item {
+      background: var(--accent-soft);
+      border: 1px solid var(--line);
+    }
+
+    .break-item .agenda-time {
+      color: var(--muted);
+    }
+
+    
+
+    .concluding-item {
+      background: #fcfcfc;
+      border: 1px solid var(--line);
+    }
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    .footer {
+      padding: 1.6rem 0 2.6rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer-box {
+      padding: 0.95rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .agenda-item {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding-top: 4.3rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <div class="container">
+      <nav>
+        <a href="#top" class="brand">AI for DNA, Chemicals and Microbiome</a>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#themes">Themes</a>
+          <a href="#agenda">Agenda</a>
+          
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+                    <h1>AI for DNA, Chemicals and Microbiome</h1>
+                    <h2>Models, Mechanisms and Applications</h2>
+          
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:your.email@institution.edu">Registration</a>
+            <a class="btn btn-secondary" href="#agenda">Programme</a>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; max-width:100%;">
+            <div class="card" style="padding:1rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; max-width:520px;">
+              <div style="font-weight:700;">📅 May 27th, 2026</div>
+              <div style="font-weight:700;">⏱️ 9:30 AM</div>
+            </div>
+            <div class="card" style="padding:1rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; max-width:520px;">
+              <div>📍 Natural History Museum, The Auditorium</div>
+              <div>Øster Voldgade 5, Copenhagen, Denmark</div>
+              <div><u><a href="https://snm.dk/en/map-and-directions" target="_blank">https://snm.dk/en/map-and-directions</a></u></div>
+            </div>
+            <div style="display:flex; gap:5rem; align-items:center; margin-left:auto;">
+              <a href="https://www.aicentre.dk/" target="_blank"><img src="logos/pioneer.png" alt="AI Pioneer Center logo" style="height:65px; object-fit:contain;"></a>
+              <a href="https://bright.dtu.dk/" target="_blank"><img src="logos/bright.png" alt="BRIGHT DTU logo" style="height:65px; object-fit:contain;"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About the workshop</h2>
+        <p class="section-lead">
+This workshop brings together researchers in machine learning, biology, and chemistry to advance AI methods for molecular and biological systems. It focuses on foundation models trained on genomic and molecular data, as well as multimodal approaches for integrating omics data. <br>
+
+We also dive into a novel field of mechanistic interpretability to understand how well models capture biological processes.<br>
+
+Microbiome data serves as a central application area, highlighting challenges in sparse, compositional, and heterogeneous data, and motivating generalizable modeling approaches.<br>
+
+The aim is to map the current state of the field, identify key challenges in modeling and evaluation, and foster new collaborations.<br>
+        </p>
+      </div>
+    </section>
+
+    <section id="themes">
+      <div class="container">
+        <h2 class="section-title">Speakers & Themes</h2>
+
+        <div class="speakers-group">
+          <h3>Foundation models</h3>
+          <div class="speaker-grid">
+            <div class="speaker"><details><summary><img src="photos/roman_bushuiev.jpg"><div class="speaker-name">Roman Bushuiev</div><div class="speaker-meta">PhD Student · Czech Institute of Informatics, Robotics and Cybernetics</div><div class="bio-label">Bio</div></summary><div class="abstract">Roman Bushuiev's research focuses on machine learning for the discovery of molecules from tandem mass spectra. He is the first author of DreaMS (Nature Biotechnology, 2025) and MassSpecGym (NeurIPS 2024, Spotlight), a Google PhD Fellow, and a member of the ELLIS PhD program.</div></details></div>
+            <div class="speaker"><details><summary><img src="photos/frederikke_isa_marin.jpeg"><div class="speaker-name">Frederikke Isa Marin</div><div class="speaker-meta">Postdoctoral Researcher · University of Copenhagen</div><div class="bio-label">Bio</div></summary><div class="abstract">TBA</div></details></div>
+          </div>
+        </div>
+
+        <div class="speakers-group">
+          <h3>Mechanistic interpretability</h3>
+          <div class="speaker-grid">
+            <div class="speaker"><details><summary><img src="photos/ihor_kendiukhov.jpeg"><div class="speaker-name">Ihor Kendiukhov</div><div class="speaker-meta">Founder · Biodyn</div><div class="bio-label">Bio</div></summary><div class="abstract">Ihor is a researcher at the intersection of AI safety and AI for biology. He is the founder of BiodynAI - a project to apply mechanistic interpretability to biological foundation models. He is also a research lead at AI Safety Camp and SPAR.</div></details></div>
+            <div class="speaker"><details><summary><img src="photos/edir_sebastian_vidal_castro.jpeg"><div class="speaker-name">Edir Sebastian Vidal Castro</div><div class="speaker-meta">Data Scientist · Biotechnology Research Institute for the Green Transition (BRIGHT)</div><div class="bio-label">Bio</div></summary><div class="abstract">TBA</div></details></div>
+          </div>
+        </div>
+
+        <div class="themes-row">
+          <div class="speakers-group">
+            <h3>Multimodality</h3>
+            <div class="speaker-grid">
+              <div class="speaker"><details><summary><img src="photos/dewei_hu.png"><div class="speaker-name">Dewei Hu</div><div class="speaker-meta">PhD Student · University of Copenhagen</div><div class="bio-label">Bio</div></summary><div class="abstract">Dewei Hu's research focuses on developing machine learning methods for multi-omics integration, protein-protein interaction networks (STRING database), and single-cell biology. His current work includes contrastive learning frameworks for proteomics and metabolomics alignment (AugMent) and network-based approaches to disease protein mapping.</div></details></div>
+            </div>
+          </div>
+
+          <div class="speakers-group">
+            <h3>Benchmarking</h3>
+            <div class="speaker-grid">
+              <div class="speaker"><details><summary><img src="photos/anton_bushuiev.jpg"><div class="speaker-name">Anton Bushuiev</div><div class="speaker-meta">PhD Student · Czech Institute of Informatics, Robotics and Cybernetics</div><div class="bio-label">Bio</div></summary><div class="abstract">Anton Bushuiev's research spans machine learning for molecular sciences, including small-molecule mass spectrometry and protein engineering. He is a co-first author of DreaMS (Nature Biotechnology, 2025) and MassSpecGym (NeurIPS 2024, Spotlight), and the first author of methods in protein modeling including ProteinTTT (ICLR 2024) and PPIformer (ICLR 2026).</div></details></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="speakers-group">
+          <h3>Microbiome: data and applications</h3>
+          <div class="speaker-grid">
+            <div class="speaker"><details><summary><img src="photos/shiraz_shah.jpg"><div class="speaker-name">Shiraz Shah</div><div class="speaker-meta">Senior Researcher · Copenhagen Prospective Studies of Asthma in Childhood, Gentofte Hospital</div><div class="bio-label">Bio</div></summary><div class="abstract">TBA</div></details></div>
+            <div class="speaker"><details><summary><img src="photos/damian_rafal_plichta.jpeg"><div class="speaker-name">Damian Rafal Plichta</div><div class="speaker-meta">Head of Data Science · Novonesis</div><div class="bio-label">Bio</div></summary><div class="abstract">TBA</div></details></div>
+          </div>
+        </div>
+
+        <div class="speakers-group organizers-group">
+          <h3>Organizers</h3>
+          <div class="speaker-grid">
+            <div class="speaker"><img src="photos/svetlana_kutuzova.jpeg"><div class="speaker-name">Svetlana Kutuzova</div><div class="speaker-meta">Assistant Professor · University of Copenhagen, Pioneer Centre for Artificial Intelligence</div><div class="speaker-email"><a href="mailto:svegal@di.ku.dk">svegal@di.ku.dk</a></div></div>
+            <div class="speaker"><img src="photos/alberto_santos_delgado.jpeg"><div class="speaker-name">Alberto Santos Delgado</div><div class="speaker-meta">Director of Informatics Platform · Biotechnology Research Institute for the Green Transition (BRIGHT)</div><div class="speaker-email"><a href="mailto:albsad@dtu.dk">albsad@dtu.dk</a></div></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="agenda">
+      <div class="container">
+        <h2 class="section-title">Agenda</h2>
+        <div class="agenda">
+          <div class="card agenda-item break-item">
+            <div class="agenda-time">09:30</div>
+            <div>
+              <h3>Morning coffee</h3>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">10:00</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>DreaMS: a Foundation Model for Tandem Mass Spectrometry</h3>
+                  <p>Roman Bushuiev, PhD student at Czech Institute of Informatics, Robotics and Cybernetics</p>
+                </summary>
+                <div class="abstract">The vast majority of tandem mass spectra acquired in metabolomics experiments remain unannotated. We present DreaMS, a transformer-based neural network pre-trained in a self-supervised way on millions of unannotated mass spectra from public repositories. Through masked peak prediction and retention order learning, DreaMS acquires rich representations of molecular structures without relying on annotated spectral libraries or domain expertise. We show how fine-tuning DreaMS yields state-of-the-art performance across diverse tasks including spectral similarity, molecular fingerprint prediction, and fluorine detection. We then present five new methods built on DreaMS — targeting the discovery of plant fluorinated natural products, environmental PFAS screening, novel metabolite prioritization, billion-scale spectral search, and general-purpose structure identification. Finally, we introduce DreaMS Atlas, a molecular network of 200 million mass spectra connecting compounds across thousands of independent studies.</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">10:30</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>DNA Foundation Models</h3>
+                  <p>Frederikke Isa Marin, Postdoctoral Researcher at University of Copenhagen</p>
+                </summary>
+                <div class="abstract">TBA</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">11:00</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>Proteome-Augmented Metabolomics Improves Disease Risk Prediction in Population Cohorts</h3>
+                  <p>Dewei Hu, PhD Student at University of Copenhagen</p>
+                </summary>
+                <div class="abstract">Proteomic profiles offer powerful predictors of disease risk but remain costly and scarce in population cohorts, limiting their translational impact. Metabolomic data, while widely available, carry substantial pre-analytical noise from fasting status, circadian timing, and recent dietary intake, which obscures stable disease-relevant signals. Here, we present AugMent, a contrastive alignment framework that uses the plasma proteome as a biological supervisory signal to distill the most stable and disease-informative components of the metabolome. While the framework supports various architectures, a CLIP-based contrastive implementation yielded the highest fidelity in the UK Biobank. When these distilled representations were used in standard Cox proportional hazards models, they improved prediction across 82 diseases. Mechanistic analysis reveals that the framework preferentially captures latent relationships involving lipoprotein remodeling and lipid transport, particularly pathways where proteins and metabolites are tightly coupled, adding predictive signals to cardiometabolic and related diseases. Together, our results demonstrate that proteome-guided distillation can unlock disease-relevant signals already present in the metabolome but otherwise masked by noise.</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item break-item">
+            <div class="agenda-time">11:30</div>
+            <div>
+              <h3>Lunch</h3>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">12:30</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>Opening the Black Boxes of Biological AI: Mechanistic Interpretability of Single-Cell Foundation Models</h3>
+                  <p>Ihor Kendiukhov, Founder at Biodyn</p>
+                </summary>
+                <div class="abstract">Foundation models like Geneformer and scGPT have shown impressive performance on biological prediction tasks, but a prediction without a mechanism is just a correlation. Ihor will present work applying mechanistic interpretability, a discipline from technical AI safety research, to open the hood of these models and ask what they have actually learned about biology. We find that bio AI models build remarkably organized internal representations: protein-protein interaction networks, pathway membership, functional modules, and subcellular localization, all encoded in structured geometric arrangements that mirror known cellular organization. But we also find an important limitation: often these models encode co-expression and pathway structure, not causal regulatory logic. They know which genes go together, but not which gene controls which. <br>
+
+Ihor will also present the discovery and extraction of a compact developmental algorithm from inside scGPT: a representation of blood cell differentiation that we surgically removed from the model as a standalone tool roughly a thousand times smaller, faster, and competitive with established bioinformatics methods. This points toward a new way of creating bioinformatics algorithms, not by designing them, but by extracting them from foundation model internals. Ihor will close by discussing where biological foundation models can be trusted, where they should not be, and how interpretability bridges the gap between black-box AI and the mechanistic understanding that biology demands.</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">13:15</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>Sparse Autoencoders for Graph Neural Networks</h3>
+                  <p>Edir Sebastian Vidal Castro, Data Scientist at Biotechnology Research Institute for the Green Transition (BRIGHT)</p>
+                </summary>
+                <div class="abstract">TBA</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item break-item">
+            <div class="agenda-time">13:45</div>
+            <div>
+              <h3>Afternoon coffee</h3>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">14:15</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>MassSpecGym: Benchmarking the Discovery and Identification of Molecules from Mass Spectra</h3>
+                  <p>Anton Bushuiev, PhD Student at Czech Institute of Informatics, Robotics and Cybernetics</p>
+                </summary>
+                <div class="abstract">Despite growing interest in applying machine learning to tandem mass spectrometry, progress has been hindered by the lack of standardized datasets and evaluation protocols. We present MassSpecGym, the first comprehensive benchmark for molecular discovery from MS/MS data, providing 231,000 high-quality labeled spectra across 29,000 molecules and defining three challenges: de novo structure generation, molecule retrieval, and spectrum simulation. We discuss key design decisions, including a novel molecular edit distance-based data split that resolves data leakage issues pervasive in prior work. We also present the first systematic evaluation audit of the MassSpecGym ecosystem, identifying recurring failure modes in recent works—including data contamination, reward hacking, and metric implementation divergence—that materially affect benchmarking conclusions, and release MassSpecGym v1.5 with more robust evaluation conditions.</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">14:45</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>Data-driven Approaches to Understanding Asthma in Childhood</h3>
+                  <p>Shiraz Shah, Senior Researcher at Copenhagen Prospective Studies of Asthma in Childhood, Gentofte Hospital</p>
+                </summary>
+                <div class="abstract">TBA</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item talk">
+            <div class="agenda-time">15:15</div>
+            <div>
+              <details>
+                <summary>
+                  <h3>Foundation Models in Practice: Proteomics and Metabolomics</h3>
+                  <p>Damian Rafal Plichta, Head of Data Science at Novonesis</p>
+                </summary>
+                <div class="abstract">TBA</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card agenda-item break-item">
+            <div class="agenda-time">15:45-16:00</div>
+            <div>
+              <h3>Concluding remarks and thanks for today!</h3>
+            </div>
+      </div>
+    </section>
+
+    
+  </main>
+
+  
+</body>
+</html>
